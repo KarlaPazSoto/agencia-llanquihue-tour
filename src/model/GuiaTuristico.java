@@ -23,11 +23,12 @@ public class GuiaTuristico extends Persona{
      * @param nombre nombre del guia turistico
      * @param rut rut del guia turistico
      * @param direccion direccion del guia turistico
+     * @param telefono telefono del guia turistico
      * @param idioma del guia turistico
      * @throws ValidacionException si algun dato es invalido
      */
-    public GuiaTuristico(String nombre, String rut, Direccion direccion, String idioma) throws ValidacionException {
-        super(nombre, rut, direccion);
+    public GuiaTuristico(String nombre, String rut, Direccion direccion, String telefono, String idioma) throws ValidacionException {
+        super(nombre, rut, direccion, telefono);
 
         Validador.validarTextoVacio(idioma, "idioma");
 

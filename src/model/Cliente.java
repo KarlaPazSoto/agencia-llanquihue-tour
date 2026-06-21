@@ -24,11 +24,12 @@ public class Cliente extends Persona{
      * @param nombre nombre del cliente
      * @param rut rut del cliente
      * @param direccion direccion del cliente
+     * @param telefono telefono del cliente
      * @param tourReservado tour reservado por el cliente
      * @throws ValidacionException si algun dato es invalido
      */
-    public Cliente(String nombre, String rut, Direccion direccion, String tourReservado) throws ValidacionException {
-        super(nombre, rut, direccion);
+    public Cliente(String nombre, String rut, Direccion direccion, String telefono,String tourReservado) throws ValidacionException {
+        super(nombre, rut, direccion, telefono);
 
         Validador.validarTextoVacio(tourReservado, "tour reservado");
 
