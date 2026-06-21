@@ -12,6 +12,7 @@ public class Persona {
     private String nombre;
     private String rut;
     private Direccion direccion;
+    private String telefono;
 
     /**
      * Constructor vacio
@@ -26,9 +27,10 @@ public class Persona {
      * @param nombre nombre de la persona
      * @param rut rut de la persona
      * @param direccion direccion de la persona
+     * @param telefono teléfono de la persona
      * @throws ValidacionException si los datos son invalidos
      */
-    public Persona(String nombre, String rut, Direccion direccion) throws ValidacionException {
+    public Persona(String nombre, String rut, Direccion direccion, String telefono) throws ValidacionException {
 
         Validador.validarTextoVacio(nombre, "nombre");
         Validador.validarRut(rut);
@@ -36,6 +38,7 @@ public class Persona {
         this.nombre = nombre;
         this.rut = rut;
         this.direccion = direccion;
+        this.telefono = telefono;
     }
 
     /**
@@ -93,6 +96,24 @@ public class Persona {
     }
 
     /**
+     * Obtiene el telefono de la persona
+     *
+     * @return telefono
+     */
+    public String getTelefono() {
+        return telefono;
+    }
+
+    /**
+     * Modifica el telefono de la persona
+     *
+     * @param telefono nuevo telefono
+     */
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
+
+    /**
      * Devuelve la informacion de la persona en formato de texto legible
      *
      * @return informacion de la persona
@@ -101,6 +122,7 @@ public class Persona {
     public String toString() {
         return  "nombre:'" + nombre + '\'' +
                 ", rut:'" + rut + '\'' +
-                ", direccion: " + direccion;
+                ", direccion: " + direccion + '\'' +
+                ", telefono: " + telefono;
     }
 }
