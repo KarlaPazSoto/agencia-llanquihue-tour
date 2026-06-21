@@ -1,11 +1,10 @@
 package model;
 
-import utils.ValidacionException;
-import utils.Validador;
+import util.ValidacionException;
+import util.Validador;
 
 public class Direccion {
 
-    public class Direccion {
 
         //atribuos privados
         private String calle;
@@ -102,5 +101,4 @@ public class Direccion {
                     ", numero:" + numero +
                     ", comuna:'" + comuna + '\'';
         }
-    }
 }

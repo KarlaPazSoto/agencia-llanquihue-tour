@@ -1,7 +1,7 @@
 package model;
 
-import utils.ValidacionException;
-import utils.Validador;
+import util.ValidacionException;
+import util.Validador;
 
 /**
  * Representa a un cliente de la agencia
