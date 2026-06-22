@@ -49,7 +49,14 @@ public class GuiaTuristico extends Persona{
      *
      * @param idioma nuevo idioma
      */
-    public void setIdioma(String idioma) {
+    public void setIdioma(String idioma)
+            throws ValidacionException {
+
+        Validador.validarTextoVacio(
+                idioma,
+                "idioma"
+        );
+
         this.idioma = idioma;
     }
 

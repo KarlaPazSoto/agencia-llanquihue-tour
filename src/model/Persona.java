@@ -30,10 +30,13 @@ public class Persona {
      * @param telefono teléfono de la persona
      * @throws ValidacionException si los datos son invalidos
      */
-    public Persona(String nombre, String rut, Direccion direccion, String telefono) throws ValidacionException {
+    public Persona(String nombre, String rut, Direccion direccion, String telefono)
+            throws ValidacionException {
 
         Validador.validarTextoVacio(nombre, "nombre");
         Validador.validarRut(rut);
+        Validador.validarDireccion(direccion);
+        Validador.validarTelefono(telefono);
 
         this.nombre = nombre;
         this.rut = rut;
@@ -55,7 +58,10 @@ public class Persona {
      *
      * @param nombre nuevo nombre
      */
-    public void setNombre(String nombre) {
+    public void setNombre(String nombre) throws ValidacionException {
+
+        Validador.validarTextoVacio(nombre, "nombre");
+
         this.nombre = nombre;
     }
 
@@ -73,7 +79,10 @@ public class Persona {
      *
      * @param rut nuevo rut
      */
-    public void setRut(String rut) {
+    public void setRut(String rut) throws ValidacionException {
+
+        Validador.validarRut(rut);
+
         this.rut = rut;
     }
 
@@ -91,7 +100,11 @@ public class Persona {
      *
      * @param direccion nueva direccion
      */
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(Direccion direccion)
+            throws ValidacionException {
+
+        Validador.validarDireccion(direccion);
+
         this.direccion = direccion;
     }
 
@@ -109,7 +122,11 @@ public class Persona {
      *
      * @param telefono nuevo telefono
      */
-    public void setTelefono(String telefono) {
+    public void setTelefono(String telefono)
+            throws ValidacionException {
+
+        Validador.validarTelefono(telefono);
+
         this.telefono = telefono;
     }
 

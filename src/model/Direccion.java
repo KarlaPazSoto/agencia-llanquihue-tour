@@ -49,7 +49,10 @@ public class Direccion {
          *
          * @param calle nueva calle
          */
-        public void setCalle(String calle) {
+        public void setCalle(String calle) throws ValidacionException {
+
+            Validador.validarTextoVacio(calle, "calle");
+
             this.calle = calle;
         }
 
@@ -67,7 +70,10 @@ public class Direccion {
          *
          * @param numero nuevo numero
          */
-        public void setNumero(int numero) {
+        public void setNumero(int numero) throws ValidacionException {
+
+            Validador.validarNumeroPositivo(numero, "numero");
+
             this.numero = numero;
         }
 
@@ -85,7 +91,10 @@ public class Direccion {
          *
          * @param comuna nueva comuna
          */
-        public void setComuna(String comuna) {
+        public void setComuna(String comuna) throws ValidacionException {
+
+            Validador.validarTextoVacio(comuna, "comuna");
+
             this.comuna = comuna;
         }
 

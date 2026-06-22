@@ -93,5 +93,17 @@ public class Validador {
         }
     }
 
+    public static void validarTelefono(String telefono)
+            throws ValidacionException {
+
+        validarTextoVacio(telefono, "telefono");
+
+        if (!telefono.matches("\\d{8,12}")) {
+            throw new ValidacionException(
+                    "El telefono debe contener solo numeros."
+            );
+        }
+    }
+
 
 }

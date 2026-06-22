@@ -50,7 +50,14 @@ public class Cliente extends Persona{
      *
      * @param tourReservado nuevo tour reservado
      */
-    public void setTourReservado(String tourReservado) {
+    public void setTourReservado(String tourReservado)
+            throws ValidacionException {
+
+        Validador.validarTextoVacio(
+                tourReservado,
+                "tour reservado"
+        );
+
         this.tourReservado = tourReservado;
     }
 
