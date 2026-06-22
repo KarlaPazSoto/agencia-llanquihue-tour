@@ -5,7 +5,6 @@ import util.Validador;
 
 public class Direccion {
 
-
         //atribuos privados
         private String calle;
         private int numero;
