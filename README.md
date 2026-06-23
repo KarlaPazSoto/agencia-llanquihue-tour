@@ -269,4 +269,4 @@ para controlar errores de:
 
 ## Autor
 
-Proyecto desarrollado como parte del proceso de aprendizaje de Programación Orientada a Objetos en Java.# agencia-llanquihue-tour
+Karla Paz Soto
