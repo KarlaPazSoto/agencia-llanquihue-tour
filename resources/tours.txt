@@ -1,0 +1,11 @@
+Volcán Osorno;Puerto Varas;35000
+Saltos del Petrohué;Petrohué;25000
+Lago Todos los Santos;Puerto Varas;30000
+Frutillar Histórico;Frutillar;18000
+Isla de Chiloé;Castro;45000
+Termas de Puyehue;Puyehue;40000
+Parque Nacional Alerce Andino;Puerto Montt;22000
+Navegación por el Lago Llanquihue;Puerto Varas;28000
+Ruta de los Colonos Alemanes;Puerto Varas;20000
+Tour Fotográfico Llanquihue;Puerto Octay;32000
+Cascadas de Ensenada;Puerto Varas;27000

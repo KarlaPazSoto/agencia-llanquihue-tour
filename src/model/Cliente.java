@@ -9,7 +9,7 @@ import util.Validador;
 public class Cliente extends Persona{
 
     //atributo privado (propio del cliente)
-    private String tourReservado;
+    private Tour tourReservado;
 
     /**
      * Constructor vacio
@@ -28,10 +28,17 @@ public class Cliente extends Persona{
      * @param tourReservado tour reservado por el cliente
      * @throws ValidacionException si algun dato es invalido
      */
-    public Cliente(String nombre, String rut, Direccion direccion, String telefono,String tourReservado) throws ValidacionException {
+    public Cliente(String nombre, String rut, Direccion direccion,
+                   String telefono, Tour tourReservado)
+            throws ValidacionException {
+
         super(nombre, rut, direccion, telefono);
 
-        Validador.validarTextoVacio(tourReservado, "tour reservado");
+        if (tourReservado == null) {
+            throw new ValidacionException(
+                    "Debe seleccionar un tour."
+            );
+        }
 
         this.tourReservado = tourReservado;
     }
@@ -41,7 +48,7 @@ public class Cliente extends Persona{
      *
      * @return tour reservado
      */
-    public String getTourReservado() {
+    public Tour getTourReservado() {
         return tourReservado;
     }
 
@@ -50,13 +57,14 @@ public class Cliente extends Persona{
      *
      * @param tourReservado nuevo tour reservado
      */
-    public void setTourReservado(String tourReservado)
+    public void setTourReservado(Tour tourReservado)
             throws ValidacionException {
 
-        Validador.validarTextoVacio(
-                tourReservado,
-                "tour reservado"
-        );
+        if (tourReservado == null) {
+            throw new ValidacionException(
+                    "Debe seleccionar un tour."
+            );
+        }
 
         this.tourReservado = tourReservado;
     }
@@ -70,7 +78,7 @@ public class Cliente extends Persona{
     public String toString() {
         return "Cliente{" +
                 super.toString() +
-                ", tourReservado:'" + tourReservado + '\'' +
+                ", tourReservado:'" + tourReservado.getNombre() + '\'' +
                 '}';
     }
 }

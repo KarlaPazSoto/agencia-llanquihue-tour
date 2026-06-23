@@ -1,0 +1,8 @@
+CLIENTE;Juan Pérez;11111111-1;Los Robles;123;Puerto Montt;987654321;Volcán Osorno
+CLIENTE;María González;22222222-2;Alerce Sur;456;Puerto Varas;912345678;Saltos del Petrohué
+CLIENTE;Carlos Muñoz;33333333-3;Las Camelias;789;Frutillar;923456789;Lago Todos los Santos
+GUIA;Ana Soto;44444444-4;San Martín;321;Puerto Varas;934567890;Inglés
+GUIA;Pedro Rojas;55555555-5;Los Notros;654;Puerto Montt;945678901;Portugués
+GUIA;Daniela Torres;66666666-6;Los Coihues;987;Frutillar;956789012;Alemán
+CLIENTE;Sofia Herrera;77777777-7;Los Canelos;100;Puerto Varas;912345678;Volcán Osorno
+GUIA;Ricardo Perez;88888888-8;Las Rosas;250;Frutillar;999888777;Frances
