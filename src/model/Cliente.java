@@ -81,4 +81,11 @@ public class Cliente extends Persona{
                 ", tourReservado:'" + tourReservado.getNombre() + '\'' +
                 '}';
     }
+
+    @Override
+    public String mostrarResumen() {
+        return "Cliente: " + getNombre() + " | RUT: " + getRut() +
+               " | Tour: " + tourReservado.getNombre() +
+               " | Teléfono: " + getTelefono();
+    }
 }

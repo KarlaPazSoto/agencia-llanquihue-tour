@@ -11,6 +11,9 @@ import util.ValidacionException;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Servicio encargado de administrar las personas
+ */
 public class PersonaService {
 
     private ArrayList<Persona> personas;

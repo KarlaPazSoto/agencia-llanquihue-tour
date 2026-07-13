@@ -72,4 +72,10 @@ public class GuiaTuristico extends Persona{
                 ", idioma:'" + idioma + '\'' +
                 '}';
     }
+
+    @Override
+    public String mostrarResumen() {
+        return "Guía: " + getNombre() + " | RUT: " + getRut() +
+               " | Idioma: " + idioma + " | Teléfono: " + getTelefono();
+    }
 }

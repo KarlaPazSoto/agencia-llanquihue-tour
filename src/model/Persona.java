@@ -6,7 +6,7 @@ import util.Validador;
 /**
  * Representa a una persona dentro del sistema de la agencia de turismo
  */
-public class Persona {
+public class Persona implements Registrable {
 
     //atributos privados
     private String nombre;
@@ -141,5 +141,10 @@ public class Persona {
                 ", rut:'" + rut + '\'' +
                 ", direccion: " + direccion + '\'' +
                 ", telefono: " + telefono;
+    }
+
+    @Override
+    public String mostrarResumen() {
+        return "Persona: " + nombre + " | RUT: " + rut + " | Teléfono: " + telefono;
     }
 }

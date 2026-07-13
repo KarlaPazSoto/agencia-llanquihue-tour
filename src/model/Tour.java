@@ -7,11 +7,12 @@ import util.Validador;
  * Representa un tour turístico disponible
  * para reserva dentro del sistema.
  */
-public class Tour {
+public class Tour implements Registrable {
 
     private String nombre;
     private String lugar;
     private int precio;
+    private ServicioTuristico servicio;
 
     /**
      * Constructor vacío.
@@ -28,9 +29,25 @@ public class Tour {
      * @param precio precio del tour
      * @throws ValidacionException si los datos son inválidos
      */
+    public Tour(String nombre,String lugar, int precio)
+            throws ValidacionException {
+
+        this(nombre, lugar, precio, null);
+    }
+
+    /**
+     * Constructor con parámetros incluyendo servicio.
+     *
+     * @param nombre nombre del tour
+     * @param lugar lugar donde se realiza
+     * @param precio precio del tour
+     * @param servicio servicio turístico asociado
+     * @throws ValidacionException si los datos son inválidos
+     */
     public Tour(String nombre,
                 String lugar,
-                int precio)
+                int precio,
+                ServicioTuristico servicio)
             throws ValidacionException {
 
         Validador.validarTextoVacio(nombre, "nombre");
@@ -40,6 +57,7 @@ public class Tour {
         this.nombre = nombre;
         this.lugar = lugar;
         this.precio = precio;
+        this.servicio = servicio;
     }
 
     /**
@@ -112,15 +130,49 @@ public class Tour {
     }
 
     /**
+     * Obtiene el servicio turístico asociado al tour.
+     *
+     * @return servicio turístico
+     */
+    public ServicioTuristico getServicio() {
+        return servicio;
+    }
+
+    /**
+     * Modifica el servicio turístico del tour.
+     *
+     * @param servicio nuevo servicio turístico
+     */
+    public void setServicio(ServicioTuristico servicio) {
+        this.servicio = servicio;
+    }
+
+    /**
      * Devuelve la información del tour
      * en formato legible.
      *
      * @return información del tour
      */
 
+    @Override
+    public String mostrarResumen() {
+        StringBuilder resumen = new StringBuilder();
+        resumen.append("Tour: ").append(nombre)
+               .append(" | Lugar: ").append(lugar)
+               .append(" | Precio: $").append(precio);
+        if (servicio != null) {
+            resumen.append(" | Servicio: ").append(servicio.getNombre());
+        }
+        return resumen.toString();
+    }
 
     @Override
     public String toString() {
-        return nombre + " - " + lugar + " - $" + precio;
+        StringBuilder sb = new StringBuilder();
+        sb.append(nombre).append(" - ").append(lugar).append(" - $").append(precio);
+        if (servicio != null) {
+            sb.append(" (").append(servicio.getNombre()).append(")");
+        }
+        return sb.toString();
     }
 }

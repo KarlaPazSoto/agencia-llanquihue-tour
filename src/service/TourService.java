@@ -7,7 +7,7 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * Servicio encargado de administrar los tours.
+ * Servicio encargado de administrar los tours
  */
 public class TourService {
 
@@ -22,11 +22,12 @@ public class TourService {
     }
 
     /**
-     * Obtiene la lista de tours.
+     * Obtiene la lista de tours
      *
      * @return lista de tours
      */
     public ArrayList<Tour> getTours() {
+
         return tours;
     }
 
@@ -49,7 +50,7 @@ public class TourService {
     }
 
     /**
-     * Verifica si ya existe un tour con ese nombre.
+     * Verifica si ya existe un tour con ese nombre
      *
      * @param nombre nombre del tour
      * @return true si existe
@@ -59,7 +60,7 @@ public class TourService {
     }
 
     /**
-     * Agrega un nuevo tour.
+     * Agrega un nuevo tour
      *
      * @param tour tour a agregar
      * @return true si fue agregado
@@ -159,18 +160,20 @@ public class TourService {
 
                 String[] datos = linea.split(";");
 
-                if (datos.length != 3) {
+                if (datos.length < 3) {
                     continue;
                 }
 
                 String nombre = datos[0];
                 String lugar = datos[1];
                 int precio = Integer.parseInt(datos[2]);
+                String nombreServicio = datos.length > 3 ? datos[3] : null;
 
                 Tour tour = new Tour(
                         nombre,
                         lugar,
-                        precio
+                        precio,
+                        null
                 );
 
                 tours.add(tour);
@@ -192,11 +195,15 @@ public class TourService {
 
             for (Tour tour : tours) {
 
-                writer.write(
-                        tour.getNombre() + ";" +
-                                tour.getLugar() + ";" +
-                                tour.getPrecio()
-                );
+                String linea = tour.getNombre() + ";" +
+                        tour.getLugar() + ";" +
+                        tour.getPrecio();
+
+                if (tour.getServicio() != null) {
+                    linea += ";" + tour.getServicio().getNombre();
+                }
+
+                writer.write(linea);
 
                 writer.newLine();
             }
