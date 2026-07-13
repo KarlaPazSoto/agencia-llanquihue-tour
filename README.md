@@ -287,23 +287,17 @@ resources/tours.txt
 resources/servicios.txt
 ```
 
-3. Compilar el proyecto (Build > Build Project).
-
-4. Ejecutar desde el menú principal:
+3. Abrir la clase:
 
 ```java
-VentanaPrincipal.java
+app.Main
 ```
 
-5. Se abrirá una ventana con interfaz gráfica de 4 pestañas.
-
-6. Alternativamente, ejecutar desde consola:
+4. Ejecutar el método:
 
 ```java
-Main.java
+public static void main(String[] args)
 ```
-
-para obtener un menú de consola.
 
 ---
 
@@ -326,18 +320,12 @@ para controlar errores de:
 
 ## Posibles mejoras futuras
 
-- ✅ Interfaz gráfica (GUI) - **COMPLETADO**
-- ✅ Asociación entre tours y servicios - **COMPLETADO**
-- ✅ Interfaz Registrable para polimorfismo - **COMPLETADO**
-- ✅ GestorEntidades con genéricos e instanceof - **COMPLETADO**
 - Eliminación y modificación de registros desde GUI.
-- Persistencia mediante base de datos (SQL).
+- Persistencia mediante base de datos.
 - Asociación entre guías turísticos y tours.
 - Reportes y estadísticas avanzadas de reservas.
 - Búsqueda y filtrado avanzado desde GUI.
-- Exportación de datos a formatos como PDF o Excel.
 - Autenticación de usuarios.
-- Sistema de calificaciones y comentarios de servicios.
 
 ---
 
