@@ -1,34 +1,38 @@
 # AgenciaLlanquihueTourApp
 
-Aplicación de consola desarrollada en Java para la gestión de una agencia turística.
+Aplicación con interfaz gráfica (GUI) desarrollada en Java para la gestión integral de una agencia turística.
 
-El sistema permite administrar clientes, guías turísticos y tours disponibles, utilizando programación orientada a objetos, manejo de archivos de texto y colecciones dinámicas mediante `ArrayList`.
+El sistema permite administrar clientes, guías turísticos, tours disponibles y servicios turísticos especializados, implementando una arquitectura orientada a objetos con interfaces polimórficas, colecciones genéricas y persistencia de datos mediante archivos de texto.
 
 ---
 
 ## Objetivo
 
-Gestionar información de una agencia turística permitiendo:
+Gestionar información integral de una agencia turística permitiendo:
 
-- Registrar clientes.
-- Registrar guías turísticos.
-- Registrar tours.
-- Consultar personas registradas.
-- Consultar tours disponibles.
+- Registrar clientes con asignación a tours específicos.
+- Registrar guías turísticos con idiomas especializados.
+- Registrar tours con servicios turísticos asociados.
+- Registrar servicios turísticos (Paseos Lacustres, Excursiones Culturales, Rutas Gastronómicas).
+- Consultar y visualizar todas las entidades registradas.
 - Buscar personas por RUT.
-- Filtrar tours según distintos criterios.
-- Persistir la información mediante archivos de texto.
+- Filtrar tours según criterios.
+- Mostrar resumen polimórfico de todas las entidades.
+- Persistir información mediante archivos de texto (personas.txt, tours.txt, servicios.txt).
 
 ---
 
 ## Tecnologías utilizadas
 
-- Java
+- Java 11+
 - IntelliJ IDEA
 - Programación Orientada a Objetos (POO)
-- Colecciones (`ArrayList`)
+- Interfaces y Polimorfismo
+- Colecciones Genéricas (`ArrayList<Registrable>`)
+- Swing (GUI - JFrame, JPanel, JButton, JComboBox, etc.)
 - Manejo de archivos (`BufferedReader`, `BufferedWriter`)
 - Manejo de excepciones (`try-catch`)
+- Operador `instanceof` para tipo-comprobación
 
 ---
 
@@ -38,18 +42,28 @@ Gestionar información de una agencia turística permitiendo:
 src
 │
 ├── app
-│   └── Main.java
+│   ├── Main.java
+│   └── VentanaPrincipal.java
 │
 ├── model
+│   ├── Registrable.java (Interfaz)
 │   ├── Persona.java
 │   ├── Cliente.java
 │   ├── GuiaTuristico.java
 │   ├── Direccion.java
-│   └── Tour.java
+│   ├── Tour.java
+│   ├── ServicioTuristico.java (Clase abstracta)
+│   ├── PaseoLacustre.java
+│   ├── ExcursionCultural.java
+│   └── RutaGastronomica.java
 │
 ├── service
 │   ├── PersonaService.java
-│   └── TourService.java
+│   ├── TourService.java
+│   └── ServicioService.java
+│
+├── data
+│   └── GestorEntidades.java
 │
 └── util
     ├── Validador.java
@@ -57,12 +71,25 @@ src
 
 resources
 ├── personas.txt
-└── tours.txt
+├── tours.txt
+└── servicios.txt
 ```
 
 ---
 
 ## Conceptos de POO implementados
+
+### Interfaz Registrable
+
+Interfaz que define un contrato común para todas las entidades del sistema:
+
+```java
+public interface Registrable {
+    String mostrarResumen();
+}
+```
+
+Implementada por: `Tour`, `Persona`, `Cliente`, `GuiaTuristico`, `ServicioTuristico` (y sus subclases).
 
 ### Encapsulamiento
 
@@ -76,48 +103,54 @@ y se accede a ellos mediante métodos `get` y `set`.
 
 ### Herencia
 
-La clase `Persona` actúa como clase base.
+**Jerarquía 1: Personas**
 
 ```text
-Persona
+Persona (clase base)
 ├── Cliente
 └── GuiaTuristico
 ```
 
+**Jerarquía 2: Servicios Turísticos**
+
+```text
+ServicioTuristico (clase abstracta)
+├── PaseoLacustre
+├── ExcursionCultural
+└── RutaGastronomica
+```
+
 ### Composición
 
-La clase `Persona` contiene un objeto de tipo `Direccion`.
+- La clase `Persona` contiene un objeto de tipo `Direccion`.
+- La clase `Cliente` contiene un objeto de tipo `Tour`.
+- La clase `Tour` contiene un objeto opcional de tipo `ServicioTuristico`.
+
+### Polimorfismo con Genéricos
+
+Se utiliza una colección genérica que permite almacenar objetos de distintos tipos:
 
 ```java
-private Direccion direccion;
+ArrayList<Registrable> entidades
 ```
 
-Además, la clase `Cliente` contiene un objeto de tipo `Tour`.
+capaz de almacenar `Tour`, `Cliente`, `GuiaTuristico`, `PaseoLacustre`, `ExcursionCultural` y `RutaGastronomica`.
+
+### Operador instanceof
+
+Utilizado en `GestorEntidades` para identificar el tipo específico de cada entidad y aplicar lógica diferenciada:
 
 ```java
-private Tour tourReservado;
+if (registrable instanceof Cliente cliente) {
+    // Procesar cliente específicamente
+} else if (registrable instanceof Tour tour) {
+    // Procesar tour específicamente
+}
 ```
-
-### Polimorfismo
-
-Se utiliza una colección de tipo:
-
-```java
-ArrayList<Persona>
-```
-
-capaz de almacenar tanto objetos `Cliente` como `GuiaTuristico`.
 
 ### Sobrescritura de métodos
 
-Las clases implementan su propio método:
-
-```java
-@Override
-public String toString()
-```
-
-para mostrar la información de manera legible.
+Todas las clases implementan `mostrarResumen()` con personalizaciones según su tipo de entidad.
 
 ---
 
@@ -140,8 +173,8 @@ tours.txt
 Formato:
 
 ```text
-Volcán Osorno;Puerto Varas;35000
-Saltos del Petrohué;Petrohué;25000
+Volcán Osorno;Puerto Varas;35000;Navegación Lago Llanquihue
+Saltos del Petrohué;Petrohué;25000;Ninguno
 ```
 
 ### Personas
@@ -164,20 +197,44 @@ Formato guías:
 GUIA;Ana Soto;44444444-4;San Martín;321;Puerto Varas;934567890;Inglés
 ```
 
+### Servicios Turísticos
+
+Archivo:
+
+```text
+servicios.txt
+```
+
+Formato:
+
+```text
+PASEO_LACUSTRE;Navegación Lago Llanquihue;2;Bote
+EXCURSION_CULTURAL;Ruta Arqueológica;4;Pucará de Antuco
+RUTA_GASTRONOMICA;Tour Gastronómico Chilote;3;5
+```
+
+Se almacenan 4 campos separados por punto y coma:
+- Tipo de servicio
+- Nombre
+- Duración en horas
+- Dato especial (varía según tipo)
+
 ---
 
 ## Validaciones implementadas
 
 El sistema valida:
 
-- Campos vacíos.
-- Números positivos.
-- Formato de RUT.
-- Dígito verificador del RUT.
+- Campos vacíos en todos los formularios.
+- Números positivos (precios, duración, teléfono).
+- Formato y dígito verificador del RUT.
 - Teléfonos numéricos.
 - Objetos nulos.
-- Duplicidad de RUT.
-- Duplicidad de tours.
+- Duplicidad de RUT en personas.
+- Duplicidad de tours por nombre.
+- Duplicidad de servicios por nombre.
+- Formato de dirección (calle, número, comuna).
+- Conversión de tipos de datos.
 
 Las validaciones se centralizan en la clase:
 
@@ -191,51 +248,62 @@ utilizando excepciones personalizadas:
 ValidacionException
 ```
 
+Las excepciones se capturan en la GUI y se muestran al usuario mediante `JOptionPane`.
+
 ---
 
-## Funcionalidades disponibles
+## Interfaz Gráfica (GUI)
 
-### Menú principal
+La aplicación cuenta con una interfaz visual amigable desarrollada con **Swing** (`JFrame`, `JPanel`, `JButton`, `JComboBox`, etc.).
 
-```text
-1. Registrar cliente
-2. Registrar guía turístico
-3. Registrar tour
-4. Ver todas las personas
-5. Ver todos los tours
-6. Buscar persona por RUT
-7. Filtrar tours
-8. Salir
-```
+### VentanaPrincipal.java
 
-### Filtros de tours
+Proporciona 4 pestañas (tabs) para gestionar:
 
-```text
-1. Tours desde un precio
-2. Tours hasta un precio
-3. Tours por lugar
-4. Volver
-```
+1. **Tours** - Agregar tours con servicios asociados y visualizar todos los tours registrados.
+2. **Personas** - Agregar clientes o guías turísticos según tipo seleccionado, visualizar todas las personas.
+3. **Servicios** - Agregar servicios turísticos (Paseos, Excursiones, Rutas) y visualizar catálogo.
+4. **Resumen General** - Mostrar resumen polimórfico de todas las entidades del sistema.
+
+### Características de la GUI
+
+- **Campos de entrada dinámicos** que se adaptan según el tipo de entidad seleccionada.
+- **Validación en tiempo real** con mensajes de error usando `JOptionPane`.
+- **Tablas visuales** (`JTable`) para mostrar entidades de forma estructurada.
+- **Combos desplegables** para seleccionar tours, servicios e idiomas.
+- **Botones contextuales** que ejecutan operaciones específicas.
+- **Área de texto** para mostrar resúmenes y estadísticas.
 
 ---
 
 ## Cómo ejecutar
 
 1. Abrir el proyecto en IntelliJ IDEA.
-2. Verificar que existan los archivos:
+2. Verificar que existan los archivos en la carpeta `resources/`:
 
 ```text
 resources/personas.txt
 resources/tours.txt
+resources/servicios.txt
 ```
 
-3. Ejecutar:
+3. Compilar el proyecto (Build > Build Project).
+
+4. Ejecutar desde el menú principal:
+
+```java
+VentanaPrincipal.java
+```
+
+5. Se abrirá una ventana con interfaz gráfica de 4 pestañas.
+
+6. Alternativamente, ejecutar desde consola:
 
 ```java
 Main.java
 ```
 
-4. Utilizar el menú interactivo desde consola.
+para obtener un menú de consola.
 
 ---
 
@@ -258,12 +326,18 @@ para controlar errores de:
 
 ## Posibles mejoras futuras
 
-- Eliminación de registros.
-- Modificación de registros existentes.
-- Interfaz gráfica.
-- Persistencia mediante base de datos.
-- Asociación entre tours y guías turísticos.
-- Reportes y estadísticas de reservas.
+- ✅ Interfaz gráfica (GUI) - **COMPLETADO**
+- ✅ Asociación entre tours y servicios - **COMPLETADO**
+- ✅ Interfaz Registrable para polimorfismo - **COMPLETADO**
+- ✅ GestorEntidades con genéricos e instanceof - **COMPLETADO**
+- Eliminación y modificación de registros desde GUI.
+- Persistencia mediante base de datos (SQL).
+- Asociación entre guías turísticos y tours.
+- Reportes y estadísticas avanzadas de reservas.
+- Búsqueda y filtrado avanzado desde GUI.
+- Exportación de datos a formatos como PDF o Excel.
+- Autenticación de usuarios.
+- Sistema de calificaciones y comentarios de servicios.
 
 ---
 

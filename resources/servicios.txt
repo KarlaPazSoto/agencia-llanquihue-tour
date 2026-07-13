@@ -1,0 +1,3 @@
+PASEO_LACUSTRE;Navegación Lago Llanquihue;2;Bote
+EXCURSION_CULTURAL;Ruta Arqueológica;4;Pucará de Antuco
+RUTA_GASTRONOMICA;Tour Gastronómico Chilote;3;5
