@@ -1,4 +1,4 @@
-Volcán Osorno;Puerto Varas;35000
+Volcán Osorno;Puerto Varas;37000;Navegación Lago Llanquihue
 Saltos del Petrohué;Petrohué;25000
 Lago Todos los Santos;Puerto Varas;30000
 Frutillar Histórico;Frutillar;18000
@@ -9,3 +9,4 @@ Navegación por el Lago Llanquihue;Puerto Varas;28000
 Ruta de los Colonos Alemanes;Puerto Varas;20000
 Tour Fotográfico Llanquihue;Puerto Octay;32000
 Cascadas de Ensenada;Puerto Varas;27000
+Tour Sabores;Puerto Varas;35000;Navegación Lago Llanquihue

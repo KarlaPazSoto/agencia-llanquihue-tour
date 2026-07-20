@@ -1,9 +1,7 @@
 package service;
 
-import model.ServicioTuristico;
-import model.PaseoLacustre;
-import model.ExcursionCultural;
-import model.RutaGastronomica;
+import model.*;
+
 import java.io.*;
 import java.util.ArrayList;
 
@@ -152,7 +150,7 @@ public class ServicioService {
     public void guardarServicios() {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO))) {
             for (ServicioTuristico servicio : servicios) {
-                String linea = generarLinaServicio(servicio);
+                String linea = generarLineaServicio(servicio);
                 writer.write(linea);
                 writer.newLine();
             }
@@ -165,7 +163,7 @@ public class ServicioService {
     /**
      * Genera una línea de servicio para persistencia
      */
-    private String generarLinaServicio(ServicioTuristico servicio) {
+    private String generarLineaServicio(ServicioTuristico servicio) {
         StringBuilder sb = new StringBuilder();
 
         if (servicio instanceof PaseoLacustre paseo) {
@@ -203,4 +201,94 @@ public class ServicioService {
     public boolean hayServicios() {
         return !servicios.isEmpty();
     }
+
+    /**
+     * Modifica un servicio turístico existente.
+     *
+     * @param nombreOriginal nombre actual del servicio
+     * @param nuevoNombre nuevo nombre
+     * @param nuevaDuracion nueva duración en horas
+     * @param nuevoDatoExtra dato específico según el tipo:
+     *                       - PaseoLacustre: tipo de embarcación
+     *                       - ExcursionCultural: lugar histórico
+     *                       - RutaGastronomica: número de paradas
+     * @return true si fue modificado correctamente
+     */
+    public boolean modificarServicio(
+            String nombreOriginal,
+            String nuevoNombre,
+            int nuevaDuracion,
+            String nuevoDatoExtra) {
+
+        ServicioTuristico servicio = buscarPorNombre(nombreOriginal);
+
+        if (servicio == null) {
+            return false;
+        }
+
+        // Si cambia el nombre, verificar que no exista otro igual
+        if (!nombreOriginal.equalsIgnoreCase(nuevoNombre)
+                && existeServicio(nuevoNombre)) {
+            return false;
+        }
+
+        try {
+            servicio.setNombre(nuevoNombre);
+            servicio.setDuracionHoras(nuevaDuracion);
+
+            if (servicio instanceof PaseoLacustre paseo) {
+                paseo.setTipoEmbarcacion(nuevoDatoExtra);
+
+            } else if (servicio instanceof ExcursionCultural excursion) {
+                excursion.setLugarHistorico(nuevoDatoExtra);
+
+            } else if (servicio instanceof RutaGastronomica ruta) {
+                int paradas = Integer.parseInt(nuevoDatoExtra);
+                ruta.setNumeroParadas(paradas);
+            }
+
+            guardarServicios();
+            return true;
+
+        } catch (Exception e) {
+            System.out.println(
+                    "Error al modificar servicio: "
+                            + e.getMessage()
+            );
+            return false;
+        }
+    }
+
+    /**
+     * Elimina un servicio turístico siempre que no esté
+     * asociado a ningún tour.
+     *
+     * @param nombre nombre del servicio
+     * @param tourService servicio de tours
+     * @return true si fue eliminado
+     */
+    public boolean eliminarServicio(
+            String nombre,
+            TourService tourService) {
+
+        ServicioTuristico servicio = buscarPorNombre(nombre);
+
+        if (servicio == null) {
+            return false;
+        }
+
+        // Verificar si algún tour usa este servicio
+        for (Tour tour : tourService.getTours()) {
+
+            if (tour.getServicio() == servicio) {
+                return false;
+            }
+        }
+
+        servicios.remove(servicio);
+        guardarServicios();
+
+        return true;
+    }
+
 }

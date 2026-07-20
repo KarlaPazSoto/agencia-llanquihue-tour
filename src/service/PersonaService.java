@@ -78,28 +78,26 @@ public class PersonaService {
 
                 if (persona instanceof Cliente cliente) {
 
-                    writer.write(
-                            "CLIENTE;" +
-                                    cliente.getNombre() + ";" +
-                                    cliente.getRut() + ";" +
-                                    direccion.getCalle() + ";" +
-                                    direccion.getNumero() + ";" +
-                                    direccion.getComuna() + ";" +
-                                    cliente.getTelefono() + ";" +
-                                    cliente.getTourReservado().getNombre()
+                    writer.write("CLIENTE;" +
+                            cliente.getNombre() + ";" +
+                            cliente.getRut() + ";" +
+                            direccion.getCalle() + ";" +
+                            direccion.getNumero() + ";" +
+                            direccion.getComuna() + ";" +
+                            cliente.getTelefono() + ";" +
+                            cliente.getTourReservado().getNombre()
                     );
 
                 } else if (persona instanceof GuiaTuristico guia) {
 
-                    writer.write(
-                            "GUIA;" +
-                                    guia.getNombre() + ";" +
-                                    guia.getRut() + ";" +
-                                    direccion.getCalle() + ";" +
-                                    direccion.getNumero() + ";" +
-                                    direccion.getComuna() + ";" +
-                                    guia.getTelefono() + ";" +
-                                    guia.getIdioma()
+                    writer.write("GUIA;" +
+                            guia.getNombre() + ";" +
+                            guia.getRut() + ";" +
+                            direccion.getCalle() + ";" +
+                            direccion.getNumero() + ";" +
+                            direccion.getComuna() + ";" +
+                            guia.getTelefono() + ";" +
+                            guia.getIdioma()
                     );
                 }
 
@@ -107,11 +105,7 @@ public class PersonaService {
             }
 
         } catch (IOException e) {
-
-            System.out.println(
-                    "Error al guardar personas: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al guardar personas: " + e.getMessage());
         }
     }
 
@@ -119,8 +113,7 @@ public class PersonaService {
 
         personas.clear();
 
-        try (BufferedReader reader =
-                     new BufferedReader(new FileReader(ARCHIVO))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO))) {
 
             String linea;
 
@@ -141,38 +134,34 @@ public class PersonaService {
                 String telefono = datos[6];
                 String datoExtra = datos[7];
 
-                Direccion direccion =
-                        new Direccion(calle, numero, comuna);
+                Direccion direccion = new Direccion(calle, numero, comuna);
 
                 if (tipo.equalsIgnoreCase("CLIENTE")) {
 
-                    Tour tour =
-                            tourService.buscarPorNombre(datoExtra);
+                    Tour tour = tourService.buscarPorNombre(datoExtra);
 
                     if (tour != null) {
 
-                        Cliente cliente =
-                                new Cliente(
-                                        nombre,
-                                        rut,
-                                        direccion,
-                                        telefono,
-                                        tour
-                                );
+                        Cliente cliente = new Cliente(
+                                nombre,
+                                rut,
+                                direccion,
+                                telefono,
+                                tour
+                        );
 
                         personas.add(cliente);
                     }
 
                 } else if (tipo.equalsIgnoreCase("GUIA")) {
 
-                    GuiaTuristico guia =
-                            new GuiaTuristico(
-                                    nombre,
-                                    rut,
-                                    direccion,
-                                    telefono,
-                                    datoExtra
-                            );
+                    GuiaTuristico guia = new GuiaTuristico(
+                            nombre,
+                            rut,
+                            direccion,
+                            telefono,
+                            datoExtra
+                    );
 
                     personas.add(guia);
                 }
@@ -184,15 +173,61 @@ public class PersonaService {
                 NumberFormatException e
         ) {
 
-            System.out.println(
-                    "Error al cargar personas: "
-                            + e.getMessage()
-            );
+            System.out.println("Error al cargar personas: " + e.getMessage());
         }
     }
 
     public boolean hayPersonas() {
         return !personas.isEmpty();
+    }
+
+
+    /**
+     * Modifica una persona existente.
+     *
+     * @param rutOriginal RUT de la persona a modificar
+     * @return true si fue modificada correctamente
+     */
+
+    public boolean modificarPersona(String rutOriginal, Persona nuevaPersona){
+
+        Persona persona = buscarPorRut(rutOriginal);
+
+        if(persona == null){
+            return false;
+        }
+
+
+        int posicion = personas.indexOf(persona);
+
+
+        personas.set(posicion, nuevaPersona);
+
+        guardarPersonas();
+
+        return true;
+
+    }
+
+
+    /**
+     * Elimina una persona según su RUT.
+     *
+     * @param rut RUT de la persona
+     * @return true si fue eliminada
+     */
+    public boolean eliminarPersona(String rut) {
+
+        Persona persona = buscarPorRut(rut);
+
+        if (persona == null) {
+            return false;
+        }
+
+        personas.remove(persona);
+        guardarPersonas();
+
+        return true;
     }
 
 }

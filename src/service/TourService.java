@@ -1,5 +1,8 @@
 package service;
 
+import model.Cliente;
+import model.Persona;
+import model.ServicioTuristico;
 import model.Tour;
 import util.ValidacionException;
 
@@ -12,12 +15,17 @@ import java.util.ArrayList;
 public class TourService {
 
     private ArrayList<Tour> tours;
+    private ServicioService servicioService;
     private final String ARCHIVO = "resources/tours.txt";
 
     /**
      * Constructor.
+     *
+     * @param servicioService servicio encargado de administrar
+     *                        los servicios turísticos.
      */
-    public TourService() {
+    public TourService(ServicioService servicioService) {
+        this.servicioService = servicioService;
         tours = new ArrayList<>();
     }
 
@@ -39,14 +47,13 @@ public class TourService {
      */
     public Tour buscarPorNombre(String nombre) {
 
-        for (Tour tour : tours) {
+        int indice = buscarIndiceTour(nombre);
 
-            if (tour.getNombre().equalsIgnoreCase(nombre)) {
-                return tour;
-            }
+        if (indice == -1) {
+            return null;
         }
 
-        return null;
+        return tours.get(indice);
     }
 
     /**
@@ -57,6 +64,24 @@ public class TourService {
      */
     private boolean existeTour(String nombre) {
         return buscarPorNombre(nombre) != null;
+    }
+
+    /**
+     * Busca la posición de un tour según su nombre.
+     *
+     * @param nombre nombre del tour
+     * @return índice del tour o -1 si no existe
+     */
+    private int buscarIndiceTour(String nombre) {
+
+        for (int i = 0; i < tours.size(); i++) {
+
+            if (tours.get(i).getNombre().equalsIgnoreCase(nombre)) {
+                return i;
+            }
+        }
+
+        return -1;
     }
 
     /**
@@ -73,6 +98,91 @@ public class TourService {
 
         tours.add(tour);
         guardarTours();
+        return true;
+    }
+
+    /**
+     * Modifica un tour existente.
+     *
+     * @param nombreOriginal nombre actual del tour
+     * @param nuevoNombre nuevo nombre
+     * @param nuevoLugar nuevo lugar
+     * @param nuevoPrecio nuevo precio
+     * @param nuevoServicio nuevo servicio turístico (puede ser null)
+     * @return true si fue modificado correctamente
+     */
+    public boolean modificarTour(
+            String nombreOriginal,
+            String nuevoNombre,
+            String nuevoLugar,
+            int nuevoPrecio,
+            ServicioTuristico nuevoServicio) {
+
+        Tour tour = buscarPorNombre(nombreOriginal);
+
+        if (tour == null) {
+            return false;
+        }
+
+        // Si cambia el nombre, verificar que no exista otro igual
+        if (!nombreOriginal.equalsIgnoreCase(nuevoNombre)
+                && existeTour(nuevoNombre)) {
+            return false;
+        }
+
+        try {
+
+            tour.setNombre(nuevoNombre);
+            tour.setLugar(nuevoLugar);
+            tour.setPrecio(nuevoPrecio);
+            tour.setServicio(nuevoServicio);
+
+            guardarTours();
+
+            return true;
+
+        } catch (ValidacionException e) {
+
+            System.out.println(
+                    "Error al modificar tour: "
+                            + e.getMessage()
+            );
+
+            return false;
+        }
+    }
+
+    /**
+     * Elimina un tour siempre que no esté asociado
+     * a ningún cliente.
+     *
+     * @param nombre nombre del tour
+     * @param personaService servicio de personas
+     * @return true si fue eliminado
+     */
+    public boolean eliminarTour(
+            String nombre,
+            PersonaService personaService) {
+
+        Tour tour = buscarPorNombre(nombre);
+
+        if (tour == null) {
+            return false;
+        }
+
+        for (Persona persona : personaService.getPersonas()) {
+
+            if (persona instanceof Cliente cliente) {
+
+                if (cliente.getTourReservado().equals(tour)) {
+                    return false;
+                }
+            }
+        }
+
+        tours.remove(tour);
+        guardarTours();
+
         return true;
     }
 
@@ -147,6 +257,10 @@ public class TourService {
         return tours.get(indice);
     }
 
+    /**
+     * Carga los tours desde el archivo y vuelve a asociar
+     * el servicio turístico correspondiente, si existe.
+     */
     public void cargarTours() {
 
         tours.clear();
@@ -167,13 +281,23 @@ public class TourService {
                 String nombre = datos[0];
                 String lugar = datos[1];
                 int precio = Integer.parseInt(datos[2]);
-                String nombreServicio = datos.length > 3 ? datos[3] : null;
+
+                ServicioTuristico servicio = null;
+
+                if (datos.length > 3) {
+
+                    String nombreServicio = datos[3];
+
+                    if (!nombreServicio.equalsIgnoreCase("Ninguno")) {
+                        servicio = servicioService.buscarPorNombre(nombreServicio);
+                    }
+                }
 
                 Tour tour = new Tour(
                         nombre,
                         lugar,
                         precio,
-                        null
+                        servicio
                 );
 
                 tours.add(tour);
@@ -188,6 +312,9 @@ public class TourService {
         }
     }
 
+    /**
+     * Guarda los tours en el archivo.
+     */
     public void guardarTours() {
 
         try (BufferedWriter writer =

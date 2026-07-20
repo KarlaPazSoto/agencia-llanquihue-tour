@@ -1,3 +1,5 @@
-PASEO_LACUSTRE;Navegación Lago Llanquihue;2;Bote
+PASEO_LACUSTRE;Navegación Lago Llanquihue;3;Bote motorizado
 EXCURSION_CULTURAL;Ruta Arqueológica;4;Pucará de Antuco
 RUTA_GASTRONOMICA;Tour Gastronómico Chilote;3;5
+EXCURSION_CULTURAL;Patrimonio Colonial;6;Fuerte San Antonio de Ancud
+RUTA_GASTRONOMICA;Sabores de Puerto Varas;4;5

@@ -1,4 +1,3 @@
-CLIENTE;Juan Pérez;11111111-1;Los Robles;123;Puerto Montt;987654321;Volcán Osorno
 CLIENTE;María González;22222222-2;Alerce Sur;456;Puerto Varas;912345678;Saltos del Petrohué
 CLIENTE;Carlos Muñoz;33333333-3;Las Camelias;789;Frutillar;923456789;Lago Todos los Santos
 GUIA;Ana Soto;44444444-4;San Martín;321;Puerto Varas;934567890;Inglés
@@ -9,3 +8,5 @@ GUIA;Ricardo Perez;88888888-8;Las Rosas;250;Frutillar;999888777;Frances
 CLIENTE;karla soto;20317062-9;cuarta avenida;1300;santiago;9123456778;Saltos del Petrohué
 CLIENTE;fabian soto;13095393-k;calle uno;77;santiago;987654321;Lago Todos los Santos
 GUIA;jose perez;20777666-1;calle dos;66;frutillar;912345678;frances
+CLIENTE;Camila Rojas;18765432-7;Los Arrayanes;245;Puerto Varas;987651234;Parque Nacional Alerce Andino
+GUIA;Valentina Diaz;20876456-k;Imperial;350;Frutillar;981726354;Alemán
