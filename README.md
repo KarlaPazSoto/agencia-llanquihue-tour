@@ -10,16 +10,17 @@ El sistema permite administrar clientes, guías turísticos, tours disponibles y
 
 Gestionar información integral de una agencia turística permitiendo:
 
-- Registrar clientes con asignación a tours específicos.
-- Registrar guías turísticos con idiomas especializados.
-- Registrar tours con servicios turísticos asociados.
-- Registrar servicios turísticos (Paseos Lacustres, Excursiones Culturales, Rutas Gastronómicas).
-- Consultar y visualizar todas las entidades registradas.
-- Buscar personas por RUT.
-- Filtrar tours según criterios.
-- Mostrar resumen polimórfico de todas las entidades.
-- Persistir información mediante archivos de texto (personas.txt, tours.txt, servicios.txt).
-
+- Registrar clientes asociados a tours disponibles.
+- Registrar guías turísticos con información de idiomas.
+- Registrar tours con lugares, precios y servicios turísticos asociados.
+- Registrar servicios turísticos especializados:
+    - Paseos Lacustres.
+    - Excursiones Culturales.
+    - Rutas Gastronómicas.
+- Visualizar la información registrada mediante tablas gráficas.
+- Modificar y eliminar registros existentes utilizando selección mediante listas desplegables.
+- Mostrar un resumen general de todas las entidades mediante procesamiento polimórfico.
+- Mantener persistencia de datos mediante archivos de texto.
 ---
 
 ## Tecnologías utilizadas
@@ -36,6 +37,52 @@ Gestionar información integral de una agencia turística permitiendo:
 
 ---
 
+## Arquitectura del sistema
+
+La aplicación está organizada siguiendo una separación por responsabilidades:
+
+### Model
+
+Contiene las clases que representan las entidades principales del sistema:
+
+- Personas.
+- Tours.
+- Servicios turísticos.
+
+### Service
+
+Contiene la lógica de negocio:
+
+- Validaciones.
+- Registro.
+- Modificación.
+- Eliminación.
+- Persistencia de información.
+
+### Paneles
+
+Contiene la interfaz gráfica independiente para cada módulo:
+
+- PanelTours.
+- PanelPersonas.
+- PanelServicios.
+- PanelResumen.
+
+### Data
+
+Administra la colección general de entidades mediante:
+
+- GestorEntidades.
+
+### Util
+
+Contiene herramientas auxiliares:
+
+- Validaciones.
+- Manejo de excepciones personalizadas.
+
+---
+
 ## Estructura del proyecto
 
 ```text
@@ -45,6 +92,12 @@ src
 │   ├── Main.java
 │   └── VentanaPrincipal.java
 │
+├── paneles
+│   ├── PanelTours.java
+│   ├── PanelPersonas.java
+│   ├── PanelServicios.java
+│   └── PanelResumen.java
+│ 
 ├── model
 │   ├── Registrable.java (Interfaz)
 │   ├── Persona.java
@@ -254,7 +307,95 @@ Las excepciones se capturan en la GUI y se muestran al usuario mediante `JOption
 
 ## Interfaz Gráfica (GUI)
 
-La aplicación cuenta con una interfaz visual amigable desarrollada con **Swing** (`JFrame`, `JPanel`, `JButton`, `JComboBox`, etc.).
+La aplicación cuenta con una interfaz gráfica desarrollada utilizando Java Swing.
+
+La ventana principal funciona como contenedor de los diferentes módulos del sistema mediante pestañas independientes.
+
+### VentanaPrincipal.java
+
+La ventana principal se encarga de:
+
+- Inicializar los servicios de negocio.
+- Cargar información almacenada desde archivos.
+- Crear y administrar los paneles gráficos.
+- Coordinar la comunicación entre los módulos.
+
+La interfaz está dividida en cuatro pestañas:
+
+### 1. Panel Tours
+
+Permite gestionar los tours disponibles.
+
+Funciones:
+
+- Registrar nuevos tours.
+- Asociar opcionalmente un servicio turístico.
+- Visualizar tours registrados mediante tablas.
+- Modificar tours existentes seleccionándolos desde una lista.
+- Eliminar tours considerando restricciones de asociación con clientes.
+
+Campos gestionados:
+
+- Nombre del tour.
+- Lugar.
+- Precio.
+- Servicio asociado.
+
+---
+
+### 2. Panel Personas
+
+Permite gestionar clientes y guías turísticos.
+
+Funciones:
+
+- Registrar clientes asociados a tours.
+- Registrar guías turísticos con idiomas.
+- Visualizar personas registradas.
+- Modificar información existente.
+- Eliminar personas mediante selección del registro.
+
+Campos gestionados:
+
+Datos generales:
+- Nombre.
+- RUT.
+- Teléfono.
+- Dirección.
+
+Datos específicos:
+- Cliente:
+  - Tour reservado.
+
+- Guía turístico:
+  - Idioma.
+
+### 3. Panel Servicios
+
+Permite administrar los servicios turísticos disponibles.
+
+Funciones:
+
+- Registrar servicios especializados.
+- Visualizar catálogo de servicios.
+- Modificar servicios existentes.
+- Eliminar servicios considerando asociaciones con tours.
+
+Tipos disponibles:
+
+- Paseo Lacustre.
+- Excursión Cultural.
+- Ruta Gastronómica.
+
+Campos gestionados:
+
+- Tipo de servicio.
+- Nombre.
+- Duración.
+- Información específica según el tipo:
+  - Tipo de embarcación.
+  - Lugar histórico.
+  - Cantidad de paradas.
 
 ### VentanaPrincipal.java
 
@@ -273,6 +414,9 @@ Proporciona 4 pestañas (tabs) para gestionar:
 - **Combos desplegables** para seleccionar tours, servicios e idiomas.
 - **Botones contextuales** que ejecutan operaciones específicas.
 - **Área de texto** para mostrar resúmenes y estadísticas.
+- - Selección de registros mediante componentes JComboBox para evitar errores de escritura.
+- Formularios reutilizables separados en paneles independientes.
+- Ventanas emergentes de confirmación y validación mediante JOptionPane.
 
 ---
 
@@ -320,9 +464,7 @@ para controlar errores de:
 
 ## Posibles mejoras futuras
 
-- Eliminación y modificación de registros desde GUI.
 - Persistencia mediante base de datos.
-- Asociación entre guías turísticos y tours.
 - Reportes y estadísticas avanzadas de reservas.
 - Búsqueda y filtrado avanzado desde GUI.
 - Autenticación de usuarios.
